@@ -1,0 +1,8 @@
+.ngx_simple_uploader_box { float: right;}
+.file_box { position: relative; height: 50px; width: 50px; border: 1px solid #999999; background: rgba(0, 0, 0, 0.3);}
+.up_btn { position: relative; line-height: 30px; width: 80px; text-align: center; overflow: hidden;
+    input { position: absolute; top: 0; left: 0; height: 100%; width: 100%; opacity: 0;}
+}
+.file_list { border-collapse: collapse; border-spacing: 0;
+    td { padding: 10px 15px; border: 1px solid #999;}
+}
