@@ -22,7 +22,7 @@ export interface FileItemType {
     // 来源目录
     sourcePath: string;
     // 文件状态，为了在外面可以扩展加了string
-    uploadType: uploadType | string;
+    uploadType: uploadType;
     // 文件本身
     file: any;
     // 上传进度

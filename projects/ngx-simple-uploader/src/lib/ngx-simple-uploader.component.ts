@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FileItemType} from '../types';
 import {options} from '../defaultData';
 import {NgxSimpleUploaderService} from './ngx-simple-uploader.service';
+import {Md5Service} from "./md5.service";
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -42,7 +43,8 @@ import {NgxSimpleUploaderService} from './ngx-simple-uploader.service';
 export class NgxSimpleUploaderComponent implements OnInit {
 
     constructor(
-        public readonly simpleUploaderUtils: NgxSimpleUploaderService
+        public readonly simpleUploaderUtils: NgxSimpleUploaderService,
+        public readonly md5: Md5Service
     ) {
     }
 
@@ -90,7 +92,7 @@ export class NgxSimpleUploaderComponent implements OnInit {
                 chunkSize: this.options.chunkSize,
                 targetPath: '',
                 sourcePath: '',
-                uploadType: 'md5ing',
+                uploadType: 'encrypt',
                 file,
                 uploadProgress: 0
             });
@@ -98,32 +100,28 @@ export class NgxSimpleUploaderComponent implements OnInit {
 
         this.fileAddMD5();
 
-        this.fileList.forEach((v: any, i: number) => {
-            this.simpleUploaderUtils.fileToMd5(v.file).then((md5: any) => {
-                this.fileList[i].md5 = md5;
-                this.fileList[i].uploadType = 'preparing';
-                // console.log(v);
-            });
-        });
-
         // 如果是自动上上传将会进行上传操作
         if (this.options.autoUpload) {
         }
     }
 
-    /** 对文件进行MD5加密 */
-    fileAddMD5(): void {
-        // for (let i = 0; i < this.fileList.length; i++) {
-        //     console.log(this.fileList[i]);
-        //     if (this.fileList[i].uploadType === 'md5ing') {
-        //         console.log(i);
-        //         break;
-        //     }
-        // }
-        console.log(this.fileList.entries());
-        for (const [index, file] of this.fileList.entries()) {
-            console.log(index, file);
-            file.name = (Math.random() * 1000).toFixed(0);
+    /** 对文件进行MD5加密
+     * 为了更好的性能每次只对一个文件进行加密
+     */
+    async fileAddMD5() {
+        const chunkSize = 1024 * 1024 * 4;
+        const encryptFileIndex = this.fileList.findIndex((v: any) => {
+            return v.uploadType === 'encrypt';
+        });
+
+        for (const [index, item] of this.fileList.entries()) {
+            if (item.uploadType === 'encrypt') {
+                const fileMd5 = await this.md5.getFileMD5(item);
+                item.uploadType = 'preparing';
+                item.md5 = fileMd5;
+                this.fileAddMD5();
+                break;
+            }
         }
     }
 
