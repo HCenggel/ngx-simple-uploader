@@ -7,6 +7,7 @@ ngx-simple-uploader is an upload library that supports multiple concurrent uploa
 # Install
 ```sh
 npm i ngx-simple-uploader
+yarn add ngx-simple-uploader
 ```
 # use
 
