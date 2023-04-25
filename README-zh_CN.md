@@ -43,7 +43,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     // 这个必须是空的，传参不会有任何变化
     public fileList: Array<any> = [];
-    // 上传组件配置，可选
+    // 上传组件配置，可选，有默认值
     public options = {};
     // 上传组件
     @ViewChild('ngxSimpleUploader') ngxSimpleUploader: any;
