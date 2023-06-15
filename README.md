@@ -1,4 +1,5 @@
-# Under development, please do not use...
+# Under development, please do not use for your project.
+# 开发中，请不要用于您的项目。
 
 # About ngx-simple-uploader
 
